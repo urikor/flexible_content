@@ -1,0 +1,7 @@
+name = Flexible Content
+description = Flexible Content module
+package = TEST
+version = 7.x-1.0
+core = 7.x
+dependencies[] = fancybox
+dependencies[] = features
