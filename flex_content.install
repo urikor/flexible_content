@@ -1,0 +1,28 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_install();
+ */
+function flex_content_install() {
+  $modules_array = array();
+  $modules = array('features', 'fancybox', 'article_flexible_contetnt_feature');
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
+      $modules_array[] = $module;
+    }
+  }
+
+  if (!empty($modules_array)) {
+    module_enable($modules_array);
+  }
+}
+
+/**
+ * Implements hook_uninstall();
+ */
+function flex_content_uninstall() {
+
+}
