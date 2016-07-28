@@ -1,6 +1,6 @@
 <?php
 
-define('FLEX_CONTENT_PATH', drupal_get_path('module', 'flex_content'));
+define('FLEX_CONTENT_DIR', drupal_get_path('module', 'flex_content'));
 
 /**
  * Implements hook_block_info().
@@ -8,8 +8,10 @@ define('FLEX_CONTENT_PATH', drupal_get_path('module', 'flex_content'));
  */
 function flex_content_block_info() {
   $blocks = array();
-  $blocks['add_content'] = array(
-    'info' => t("Add content"),
+  $blocks['add_article_content'] = array(
+    'info' => t("Add Article content"),
+    'status' => 1,
+    'region' => 'sidebar_first',
   );
 
   return $blocks;
@@ -24,7 +26,7 @@ function flex_content_block_view($delta = '') {
   $blocks = array();
 
   switch($delta) {
-    case 'add_content':
+    case 'add_article_content':
       $blocks['subject'] = t('Flexible content');
       $blocks['content'] = '<a id="flex-link" href="' . base_path() . 'node/add/article" class="fancybox fancybox.iframe">' . t('Add content') . '</a>';
       break;
@@ -38,33 +40,11 @@ function flex_content_block_view($delta = '') {
  */
 function flex_content_preprocess_node(&$variables) {
   if ($variables['type'] == 'article' && $variables['elements']['#view_mode'] == 'full') {
-    drupal_add_css(FLEX_CONTENT_PATH . '/css/flex.css');
-
-    if (!empty($variables['field_flexible_content'])) {
-      foreach ($variables['field_flexible_content'] as $key => $field_flexible_content) {
-        if ($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['#bundle'] == 'quote_bundle') {
-          $quote = !empty($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_text']['#items'][0]['safe_value'])
-            ? $variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_text']['#items'][0]['safe_value']
-            : NULL;
-          $link = !empty($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_href']['#items'][0]['safe_value'])
-            ? $variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_href']['#items'][0]['safe_value']
-            : NULL;
-          $link_text = !empty($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_text']['#items'][0]['safe_value'])
-            ? $variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_text']['#items'][0]['safe_value']
-            : NULL;
-
-          $variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_text'][0]['#markup'] =
-            theme('paragraph_quote', array(
-                'quote' => $quote,
-                'link' => $link,
-                'link_text' => $link_text,
-              )
-            );
-          unset($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_text']);
-          unset($variables['content']['field_flexible_content'][$key]['entity']['paragraphs_item'][$field_flexible_content['value']]['field_quote_link_href']);
-        }
-      }
-    }
+    drupal_add_css(FLEX_CONTENT_DIR . '/assets/css/flex.css');
+    drupal_add_css(FLEX_CONTENT_DIR . '/assets/owl-carousel/owl.carousel.css');
+    drupal_add_css(FLEX_CONTENT_DIR . '/assets/owl-carousel/owl.theme.css');
+    drupal_add_js(FLEX_CONTENT_DIR . '/assets/owl-carousel/owl.carousel.js');
+    drupal_add_js(FLEX_CONTENT_DIR . '/assets/js/flex.js');
   }
 }
 
@@ -73,13 +53,15 @@ function flex_content_preprocess_node(&$variables) {
  */
 function flex_content_theme() {
   return array(
-    'paragraph_quote' => array(
-      'variables' => array(
-        'quote' => NULL,
-        'link' => NULL,
-        'link_text' => NULL,
-      ),
-      'template' => 'templates/paragraph_quote',
+    'field__field_slider__text_slider' => array(
+      'render element' => 'content',
+      'template' => 'field--field-slider--text-slider',
+      'path' => FLEX_CONTENT_DIR . '/templates',
+    ),
+    'paragraphs_item__quote_bundle' => array(
+      'render element' => 'content',
+      'template' => 'paragraphs-item--quote-bundle',
+      'path' => FLEX_CONTENT_DIR . '/templates',
     ),
   );
 }

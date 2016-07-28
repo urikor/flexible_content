@@ -1,0 +1,19 @@
+.field-type-paragraphs .entity-paragraphs-item {
+    overflow: hidden;
+    width: 100%;
+}
+.paragraphs-item-text-slider .field-type-text-with-summary,
+.paragraphs-item-text-slider .field-name-field-slider,
+.paragraphs-item-text-slider .field-type-text,
+.paragraphs-item-paragraph-bundle-1 .field-type-text-with-summary,
+.paragraphs-item-paragraph-bundle-1 .field-name-field-slider,
+.paragraphs-item-paragraph-bundle-1 .field-type-text,
+.paragraphs-bundle-field{
+    float: left;
+    padding: 5px;
+    width: 46%;
+}
+#slider-wrapper {
+    width: 150px;
+    text-align: center;
+}

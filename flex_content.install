@@ -3,11 +3,12 @@
  * @file
  */
 
+module_load_include('inc', 'flex_content', 'includes/fc_functions');
+
 /**
- * Implements hook_install();
+ * Implements hook_install().
  */
 function flex_content_install() {
-  $modules_array = array();
   $modules = array('features', 'fancybox', 'article_flexible_contetnt_feature');
   foreach ($modules as $module) {
     if (!module_exists($module)) {
@@ -18,10 +19,17 @@ function flex_content_install() {
   if (!empty($modules_array)) {
     module_enable($modules_array);
   }
+
+  $dir = DRUPAL_ROOT . '/sites/all/libraries';
+  fc_mkdir($dir);
+  $dir = DRUPAL_ROOT . '/sites/all/libraries/fancybox';
+  fc_mkdir($dir);
+  $src = __DIR__ . '/assets/fancybox';
+  fc_recurse_copy($src, $dir);
 }
 
 /**
- * Implements hook_uninstall();
+ * Implements hook_uninstall().
  */
 function flex_content_uninstall() {
 

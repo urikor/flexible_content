@@ -1,1 +1,2 @@
 Task timing - 4 hours
+Bug fixing, code optimizing after feedback - 2.5 hours
